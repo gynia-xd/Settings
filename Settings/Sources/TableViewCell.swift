@@ -11,8 +11,15 @@ class TableViewCell: UITableViewCell {
     
     var cell: Cell? {
         didSet {
-            titleLabel.text = cell?.name
-            iconImage.image = UIImage(named: cell?.icon ?? "error")
+            if let cell = cell {
+                titleLabel.text = cell.name
+                iconImage.backgroundColor = cell.color
+                if cell.isSystem {
+                    iconImage.image = UIImage(systemName: cell.icon)
+                } else {
+                    iconImage.image = UIImage(named: cell.icon)
+                }
+            }
         }
     }
     
@@ -27,9 +34,12 @@ class TableViewCell: UITableViewCell {
     
     private lazy var iconImage: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.cornerRadius = 4
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+
+    
     
     // MARK: - Inits
     
